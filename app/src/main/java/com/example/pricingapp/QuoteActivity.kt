@@ -2,14 +2,14 @@ package com.example.pricingapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.pricingapp.databinding.ActivityMainBinding
+import com.example.pricingapp.databinding.NewQuoteBinding
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class QuoteActivity : AppCompatActivity() {
+    private lateinit var binding: NewQuoteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = NewQuoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 }
