@@ -64,7 +64,7 @@ class QuoteActivity : AppCompatActivity() {
             // Check if missing parameters
             if (originZip.isBlank() || originCity.isBlank() || originState.isBlank() ||
                 destinationZip.isBlank() || destinationCity.isBlank() || destinationState.isBlank() ||
-                itemClass.isBlank() || itemWeight.isBlank() || itemType.isBlank() || itemQuantity.isBlank() ||
+                itemClass.isBlank() || itemWeight.isBlank() || itemType.isBlank() || itemQuantity.isBlank() || // itemClass will remain unused for this iteration
                 itemLength.isBlank() || itemWidth.isBlank() || itemHeight.isBlank()
             ) {
                 showToast("Please fill in all fields")
@@ -72,7 +72,40 @@ class QuoteActivity : AppCompatActivity() {
                 // API call
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        val call = getRetrofit().create(XmlPlaceholderApi::class.java).getQuote("xml")
+
+                        //Creating a map with the url parameters
+                        val params = hashMapOf<String, String>(
+                            "ID" to properties.getProperty("ID"),
+                            "ShipCity" to originCity,
+                            "ShipState" to originState,
+                            "ShipZip" to originZip,
+                            "ShipCountry" to "US", // Hard Coded US as we are only giving service inside the US and won't be using other counties
+                            "ConsCity" to destinationCity,
+                            "ConsState" to destinationState,
+                            "ConsZip" to destinationZip,
+                            "ConsCountry" to "US", // Hard Coded US as we are only giving service inside the US and won't be using other counties
+                            "Wgt1" to itemWeight,
+                            "FrtLng1" to itemLength,
+                            "FrtWdth1" to itemWidth,
+                            "FrtHght1" to itemHeight,
+                            "FrtLWHType" to "IN", // The API support IN and CM, we will only be using IN for this iteration
+                            "UnitNo1" to itemQuantity,
+                            "UnitType1" to itemType,
+                            "ShipMonth" to month.toString(),
+                            "ShipDay" to day.toString(),
+                            "ShipYear" to year.toString(),
+                            "TPBAff" to "Y", // Hard Coded as Mint Cargo will always be the Third Party
+                            "TPBPay" to "Y", // Hard Coded as Mint Cargo will always be in charge of payment
+                            "TPBName" to properties.getProperty("TPBName").toString(),
+                            "TPBAddr" to properties.getProperty("TPBAddr").toString(),
+                            "TPBCity" to properties.getProperty("TPBCity").toString(),
+                            "TPBState" to properties.getProperty("TPBState").toString(),
+                            "TPBZip" to properties.getProperty("TPBZip").toString(),
+                            "TPBCountry" to properties.getProperty("TPBCountry").toString(),
+                            "TPBAcct" to properties.getProperty("TPBAcct").toString()
+                        )
+
+                        val call = getRetrofit().create(XmlPlaceholderApi::class.java).getQuote(params)
 
                         runOnUiThread {
                             if (call.isSuccessful) {
