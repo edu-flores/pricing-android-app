@@ -47,6 +47,8 @@
                 android:layout_marginEnd="32dp"
                 android:text="$2,300 USD"
                 android:textStyle="bold"
+                android:textColor="#0a6419"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
