@@ -1,5 +1,6 @@
 package com.example.pricingapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -37,6 +38,13 @@ class QuoteActivity : AppCompatActivity() {
                     Log.e("QuoteActivity", "Exception during API call: ${e.message}", e)
                 }
             }
+        }
+
+        // Menu button
+        val returnHome = binding.returnHome
+        returnHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
