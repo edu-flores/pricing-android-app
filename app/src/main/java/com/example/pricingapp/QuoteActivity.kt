@@ -30,6 +30,16 @@ class QuoteActivity : AppCompatActivity() {
                         if (call.isSuccessful) {
                             val quote = call.body()
                             Log.d("QuoteActivity", "API Response: $quote")
+
+                            // Show result activity
+                            val intent = Intent(this@QuoteActivity, ResultActivity::class.java)
+                            val bundle = Bundle()
+                            bundle.putString("from", "Boston, Massachusetts")
+                            bundle.putString("to", "Las Vegas, Nevada")
+                            bundle.putInt("price", 2000)
+                            bundle.putString("transit", "3 days")
+                            intent.putExtras(bundle)
+                            startActivity(intent)
                         } else {
                             Log.e("QuoteActivity", "API Error Response: ${call.errorBody()?.string()}")
                         }
