@@ -2,9 +2,9 @@ package com.example.pricingapp
 
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Url
+import retrofit2.http.QueryMap
 
 interface XmlPlaceholderApi {
-    @GET
-    suspend fun getQuote(@Url url: String): Response<QuoteResponse>
+    @GET("https://www.abfs.com/xml/aquotexml.asp")
+    suspend fun getQuote(@QueryMap params: Map<String, String>): Response<QuoteResponse>
 }
