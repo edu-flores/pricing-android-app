@@ -11,7 +11,7 @@ interface QuoteDao {
     @Insert
     fun insert(quote: Quote): Long
 
-    @Query("SELECT * FROM quotes")
+    @Query("SELECT * FROM quotes ORDER BY id DESC")
     fun getAllQuotes(): List<Quote>
 
     @Update
