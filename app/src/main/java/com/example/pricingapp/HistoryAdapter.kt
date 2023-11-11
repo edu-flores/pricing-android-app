@@ -26,10 +26,10 @@ class HistoryAdapter(private val quoteList: List<Quote>) :
     inner class QuoteViewHolder(private val binding: QuoteItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(quote: Quote) {
-            binding.itemFromTextView.text = "From: ${quote.fromPlace}"
-            binding.itemToTextView.text = "To: ${quote.toPlace}"
+            binding.itemFromTextView.text = "From: ${quote.fromCity}, ${quote.fromState}, ${quote.fromZip}"
+            binding.itemToTextView.text = "To: ${quote.toCity}, ${quote.toState}, ${quote.toZip}"
             binding.itemPriceTextView.text = "Price: $${quote.price} USD"
-            binding.itemTransitTextView.text = "TT: ${quote.transit}"
+            binding.itemTransitTextView.text = "TT: ${quote.transitTime}"
         }
     }
 }
