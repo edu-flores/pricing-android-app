@@ -3,6 +3,7 @@ package com.example.pricingapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
@@ -14,8 +15,7 @@ import kotlinx.coroutines.launch
 class HistoryActivity : AppCompatActivity() {
     private lateinit var binding: QuoteHistoryBinding
     private val quoteList: MutableList<Quote> = mutableListOf()
-    private val db = Room.databaseBuilder(applicationContext,
-        AppDatabase::class.java, "QuoteDatabase.db").build()
+    private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +36,19 @@ class HistoryActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = HistoryAdapter(quoteList, this)
         recyclerView.adapter = adapter
+
+        if (quoteList.isEmpty()) {
+            binding.emptyTextView.visibility = View.VISIBLE
+        } else {
+            binding.emptyTextView.visibility = View.GONE
+        }
     }
 
     // SQLite
     private fun setupDatabase() {
+        db = Room.databaseBuilder(applicationContext,
+            AppDatabase::class.java, "QuoteDatabase.db").build()
+
         GlobalScope.launch(Dispatchers.IO) {
             val quotes = db.quoteDao().getAllQuotes()
             launch(Dispatchers.Main) {
@@ -64,6 +73,7 @@ class HistoryActivity : AppCompatActivity() {
             }
             quoteList.clear()
             binding.historyRecyclerView.adapter?.notifyDataSetChanged()
+            binding.emptyTextView.visibility = View.VISIBLE
             dialog.dismiss()
         }
         builder.setNegativeButton("No") { dialog, _ ->
