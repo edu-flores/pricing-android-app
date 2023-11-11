@@ -34,7 +34,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="500dp"
+        android:layout_height="530dp"
         android:layout_marginTop="32dp"
         tools:listitem="@layout/quote_item"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
