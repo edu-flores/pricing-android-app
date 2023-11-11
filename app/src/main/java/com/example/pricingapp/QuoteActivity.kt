@@ -13,6 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
+import java.io.InputStream
+import java.util.Calendar
+import java.util.Properties
 
 class QuoteActivity : AppCompatActivity() {
     private lateinit var binding: NewQuoteBinding
@@ -21,6 +24,17 @@ class QuoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = NewQuoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Getting Current Day
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        //Getting the Secret Properties
+        val properties = Properties()
+        val inputStream: InputStream = assets.open("secrets.properties")
+        properties.load(inputStream)
 
         // Database
         val db = Room.databaseBuilder(applicationContext,
