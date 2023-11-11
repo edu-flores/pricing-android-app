@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.room.Room
 import com.example.pricingapp.databinding.NewQuoteBinding
 import kotlinx.coroutines.GlobalScope
@@ -28,36 +29,64 @@ class QuoteActivity : AppCompatActivity() {
         // Calculate quote button action
         val button = binding.calculateQuote
         button.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val call = getRetrofit().create(XmlPlaceholderApi::class.java).getQuote("xml")
+            // Get user values
+            val originZip   = binding.originZip.text.toString()
+            val originCity  = binding.originCity.text.toString()
+            val originState = binding.originState.text.toString()
 
-                    runOnUiThread {
-                        if (call.isSuccessful) {
-                            val quote = call.body()
-                            Log.d("QuoteActivity", "API Response: $quote")
+            val destinationZip   = binding.destinationZip.text.toString()
+            val destinationCity  = binding.destinationCity.text.toString()
+            val destinationState = binding.destinationState.text.toString()
 
-                            // Save in SQLite
-                            GlobalScope.launch(Dispatchers.IO) {
-                                val quote1 = Quote(fromPlace = "Boston, MA", toPlace = "Las Vegas, NV", price = 8000, transit = "90 days")
-                                db.quoteDao().insert(quote1)
+            val itemClass    = binding.itemClass.text.toString()
+            val itemWeight   = binding.itemWeight.text.toString()
+            val itemType     = binding.itemType.text.toString()
+            val itemQuantity = binding.itemQuantity.text.toString()
+
+            val itemLength = binding.itemLength.text.toString()
+            val itemWidth  = binding.itemWidth.text.toString()
+            val itemHeight = binding.itemHeight.text.toString()
+
+            // Check if missing parameters
+            if (originZip.isBlank() || originCity.isBlank() || originState.isBlank() ||
+                destinationZip.isBlank() || destinationCity.isBlank() || destinationState.isBlank() ||
+                itemClass.isBlank() || itemWeight.isBlank() || itemType.isBlank() || itemQuantity.isBlank() ||
+                itemLength.isBlank() || itemWidth.isBlank() || itemHeight.isBlank()
+            ) {
+                showToast("Please fill in all fields")
+            } else {
+                // API call
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val call = getRetrofit().create(XmlPlaceholderApi::class.java).getQuote("xml")
+
+                        runOnUiThread {
+                            if (call.isSuccessful) {
+                                val quote = call.body()
+                                Log.d("QuoteActivity", "API Response: $quote")
+
+                                // Save in SQLite
+                                GlobalScope.launch(Dispatchers.IO) {
+                                    val quote1 = Quote(fromPlace = "Boston, MA", toPlace = "Las Vegas, NV", price = 8000, transit = "90 days")
+                                    db.quoteDao().insert(quote1)
+                                }
+
+                                // Show result activity
+                                val intent = Intent(this@QuoteActivity, ResultActivity::class.java)
+                                val bundle = Bundle()
+                                bundle.putString("from", "Boston, Massachusetts")
+                                bundle.putString("to", "Las Vegas, Nevada")
+                                bundle.putInt("price", 8000)
+                                bundle.putString("transit", "90 days")
+                                intent.putExtras(bundle)
+                                startActivity(intent)
+                            } else {
+                                Log.e("QuoteActivity", "API Error Response: ${call.errorBody()?.string()}")
                             }
-
-                            // Show result activity
-                            val intent = Intent(this@QuoteActivity, ResultActivity::class.java)
-                            val bundle = Bundle()
-                            bundle.putString("from", "Boston, Massachusetts")
-                            bundle.putString("to", "Las Vegas, Nevada")
-                            bundle.putInt("price", 8000)
-                            bundle.putString("transit", "90 days")
-                            intent.putExtras(bundle)
-                            startActivity(intent)
-                        } else {
-                            Log.e("QuoteActivity", "API Error Response: ${call.errorBody()?.string()}")
                         }
+                    } catch (e: Exception) {
+                        Log.e("QuoteActivity", "Exception during API call: ${e.message}", e)
                     }
-                } catch (e: Exception) {
-                    Log.e("QuoteActivity", "Exception during API call: ${e.message}", e)
                 }
             }
         }
@@ -76,5 +105,10 @@ class QuoteActivity : AppCompatActivity() {
             .baseUrl("https://testt.free.beeceptor.com/")
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build()
+    }
+
+    // Notifications
+    fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
