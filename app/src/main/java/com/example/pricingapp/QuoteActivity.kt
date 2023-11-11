@@ -109,13 +109,24 @@ class QuoteActivity : AppCompatActivity() {
 
                         runOnUiThread {
                             if (call.isSuccessful) {
-                                val quote = call.body()
-                                Log.d("QuoteActivity", "API Response: $quote")
+                                val quoteResponseData = call.body()
+                                Log.d("QuoteActivity", "API Response: $quoteResponseData")
 
                                 // Save in SQLite
                                 GlobalScope.launch(Dispatchers.IO) {
-                                    val quote1 = Quote(fromPlace = "Boston, MA", toPlace = "Las Vegas, NV", price = 8000, transit = "90 days")
-                                    db.quoteDao().insert(quote1)
+                                    val quote = Quote(
+                                        id = quoteResponseData?.quoteID.toString(),
+                                        fromCity = quoteResponseData?.originInfo?.origingTerminalCity.toString(),
+                                        fromState = quoteResponseData?.originInfo?.origingTerminalState.toString(),
+                                        fromZip = quoteResponseData?.originInfo?.originTerminalZip.toString(),
+                                        toCity = quoteResponseData?.destinationInfo?.origingTerminalCity.toString(),
+                                        toState = quoteResponseData?.destinationInfo?.origingTerminalState.toString(),
+                                        toZip = quoteResponseData?.destinationInfo?.originTerminalZip.toString(),
+                                        price = quoteResponseData?.charge.toString(),
+                                        transitTime = quoteResponseData?.transitTime.toString(),
+                                        expirationDate = quoteResponseData?.expirationDate.toString()
+                                    )
+                                    db.quoteDao().insert(quote)
                                 }
 
                                 // Show result activity
