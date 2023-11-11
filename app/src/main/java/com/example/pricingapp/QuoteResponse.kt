@@ -80,5 +80,5 @@ data class QuoteResponse(
     var originInfo: OriginTerminalInfo? = null,
 
     @field:Element(name = "DESTTERMINFO", required = false)
-    var destinationInfo: OriginTerminalInfo? = null
+    var destinationInfo: DestinationTerminalInfo? = null
 )
