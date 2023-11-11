@@ -23,15 +23,20 @@ class ResultActivity : AppCompatActivity() {
     // Show price and estimated transit
     private fun displayResultContent() {
         val bundle = intent.extras
-        val from = bundle?.getString("from").orEmpty()
-        val to = bundle?.getString("to").orEmpty()
-        val price = bundle?.getInt("price") ?: 0
-        val transit = bundle?.getString("transit").orEmpty()
+        val fromCity = bundle?.getString("fromCity").orEmpty()
+        val fromState = bundle?.getString("fromState").orEmpty()
+        val fromZip = bundle?.getString("fromZip").orEmpty()
+        val toCity = bundle?.getString("toCity").orEmpty()
+        val toState = bundle?.getString("toState").orEmpty()
+        val toZip = bundle?.getString("toZip").orEmpty()
+        val price = bundle?.getString("price") ?: 0
+        val transitTime = bundle?.getString("transitTime").orEmpty()
+        val expirationDate = bundle?.getString("expirationDate").orEmpty()
 
-        binding.fromTextView.text = "From: $from"
-        binding.toTextView.text = "To: $to"
+        binding.fromTextView.text = "From: $fromCity, $fromState, $fromZip"
+        binding.toTextView.text = "To: $toCity, $toState, $toZip"
         binding.priceTextView.text = "$${price} USD"
-        binding.transitTextView.text = "Estimated Transit:\n $transit"
+        binding.transitTextView.text = "Estimated Transit:\n $transitTime"
     }
 
     // Go to menu or view quote history
