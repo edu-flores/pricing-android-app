@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Ignore secrets.properties
+app/src/main/assets/secrets.properties
