@@ -31,7 +31,7 @@ class HistoryActivity : AppCompatActivity() {
     private fun initializeRecyclerView() {
         val recyclerView = binding.historyRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = HistoryAdapter(quoteList)
+        val adapter = HistoryAdapter(quoteList, this)
         recyclerView.adapter = adapter
     }
 
