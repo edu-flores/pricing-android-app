@@ -119,9 +119,9 @@ class QuoteActivity : AppCompatActivity() {
                                         fromCity = quoteResponseData?.originInfo?.origingTerminalCity.toString(),
                                         fromState = quoteResponseData?.originInfo?.origingTerminalState.toString(),
                                         fromZip = quoteResponseData?.originInfo?.originTerminalZip.toString(),
-                                        toCity = quoteResponseData?.destinationInfo?.origingTerminalCity.toString(),
-                                        toState = quoteResponseData?.destinationInfo?.origingTerminalState.toString(),
-                                        toZip = quoteResponseData?.destinationInfo?.originTerminalZip.toString(),
+                                        toCity = quoteResponseData?.destinationInfo?.destinationTerminalCity.toString(),
+                                        toState = quoteResponseData?.destinationInfo?.destinationTerminalState.toString(),
+                                        toZip = quoteResponseData?.destinationInfo?.destinationTerminalZip.toString(),
                                         price = quoteResponseData?.charge.toString(),
                                         transitTime = quoteResponseData?.transitTime.toString(),
                                         expirationDate = quoteResponseData?.expirationDate.toString()
@@ -132,10 +132,15 @@ class QuoteActivity : AppCompatActivity() {
                                 // Show result activity
                                 val intent = Intent(this@QuoteActivity, ResultActivity::class.java)
                                 val bundle = Bundle()
-                                bundle.putString("from", "Boston, Massachusetts")
-                                bundle.putString("to", "Las Vegas, Nevada")
-                                bundle.putInt("price", 8000)
-                                bundle.putString("transit", "90 days")
+                                bundle.putString("fromCity", quoteResponseData?.originInfo?.origingTerminalCity.toString())
+                                bundle.putString("fromState", quoteResponseData?.originInfo?.origingTerminalState.toString())
+                                bundle.putString("fromZip", quoteResponseData?.originInfo?.originTerminalZip.toString())
+                                bundle.putString("toCity", quoteResponseData?.destinationInfo?.destinationTerminalCity.toString())
+                                bundle.putString("toState", quoteResponseData?.destinationInfo?.destinationTerminalState.toString())
+                                bundle.putString("toZip", quoteResponseData?.destinationInfo?.destinationTerminalZip.toString())
+                                bundle.putString("price", quoteResponseData?.charge.toString())
+                                bundle.putString("transitTime", quoteResponseData?.transitTime.toString())
+                                bundle.putString("expirationDate", quoteResponseData?.expirationDate.toString())
                                 intent.putExtras(bundle)
                                 startActivity(intent)
                             } else {
