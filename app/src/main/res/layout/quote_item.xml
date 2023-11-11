@@ -17,7 +17,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/ItemFromTextView"
+                android:id="@+id/itemFromTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -27,17 +27,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/ItemToTextView"
+                android:id="@+id/itemToTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:text="To: Las Vegas, NV"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ItemFromTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/itemFromTextView" />
 
             <TextView
-                android:id="@+id/ItemPriceTextView"
+                android:id="@+id/itemPriceTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -48,7 +48,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/ItemTransitTextView"
+                android:id="@+id/itemTransitTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -56,7 +56,7 @@
                 android:text="TT: 3 days"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ItemPriceTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/itemPriceTextView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
