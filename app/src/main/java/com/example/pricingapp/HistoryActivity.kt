@@ -29,14 +29,6 @@ class HistoryActivity : AppCompatActivity() {
         val db = Room.databaseBuilder(applicationContext,
             AppDatabase::class.java, "QuoteDatabase.db").build()
 
-        // Add sample data to the database
-        /*
-        GlobalScope.launch(Dispatchers.IO) {
-            val quote1 = Quote(fromPlace = "City A", toPlace = "City B", price = 100, transit = "3 days")
-            db.quoteDao().insert(quote1)
-        }
-        */
-
         // Retrieve quotes from the database
         GlobalScope.launch(Dispatchers.IO) {
             val quotes = db.quoteDao().getAllQuotes()

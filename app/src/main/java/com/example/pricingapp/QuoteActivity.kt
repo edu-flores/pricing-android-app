@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.room.Room
 import com.example.pricingapp.databinding.NewQuoteBinding
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +21,10 @@ class QuoteActivity : AppCompatActivity() {
         binding = NewQuoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Database
+        val db = Room.databaseBuilder(applicationContext,
+            AppDatabase::class.java, "QuoteDatabase.db").build()
+
         // Calculate quote button action
         val button = binding.calculateQuote
         button.setOnClickListener {
@@ -31,13 +37,19 @@ class QuoteActivity : AppCompatActivity() {
                             val quote = call.body()
                             Log.d("QuoteActivity", "API Response: $quote")
 
+                            // Save in SQLite
+                            GlobalScope.launch(Dispatchers.IO) {
+                                val quote1 = Quote(fromPlace = "Boston, MA", toPlace = "Las Vegas, NV", price = 8000, transit = "90 days")
+                                db.quoteDao().insert(quote1)
+                            }
+
                             // Show result activity
                             val intent = Intent(this@QuoteActivity, ResultActivity::class.java)
                             val bundle = Bundle()
                             bundle.putString("from", "Boston, Massachusetts")
                             bundle.putString("to", "Las Vegas, Nevada")
-                            bundle.putInt("price", 2000)
-                            bundle.putString("transit", "3 days")
+                            bundle.putInt("price", 8000)
+                            bundle.putString("transit", "90 days")
                             intent.putExtras(bundle)
                             startActivity(intent)
                         } else {
