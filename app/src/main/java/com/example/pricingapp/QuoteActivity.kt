@@ -165,7 +165,7 @@ class QuoteActivity : AppCompatActivity() {
     // Retrofit library for API responses
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://testt.free.beeceptor.com/")
+            .baseUrl("https://www.abfs.com/xml/aquotexml.asp/")
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build()
     }
