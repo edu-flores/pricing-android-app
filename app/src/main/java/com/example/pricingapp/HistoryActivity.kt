@@ -19,34 +19,48 @@ class HistoryActivity : AppCompatActivity() {
         binding = QuoteHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize recyclerView and adapter
+        // Setup recycler view and database
+        initializeRecyclerView()
+        setupDatabase()
+
+        // Navigation
+        setupMenuButtons()
+    }
+
+    // Recycler view and adapter
+    private fun initializeRecyclerView() {
         val recyclerView = binding.historyRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = HistoryAdapter(quoteList)
         recyclerView.adapter = adapter
+    }
 
-        // Database
+    // SQLite
+    private fun setupDatabase() {
         val db = Room.databaseBuilder(applicationContext,
             AppDatabase::class.java, "QuoteDatabase.db").build()
 
-        // Retrieve quotes from the database
         GlobalScope.launch(Dispatchers.IO) {
             val quotes = db.quoteDao().getAllQuotes()
             launch(Dispatchers.Main) {
                 for (quote in quotes) {
                     quoteList.add(quote)
                 }
-                adapter.notifyDataSetChanged()
+                binding.historyRecyclerView.adapter?.notifyDataSetChanged()
             }
         }
+    }
 
-        // Menu buttons
-        val homeButton = binding.returnHomeButton
-
-        // Switch activity listeners
-        homeButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+    // Return to menu
+    private fun setupMenuButtons() {
+        binding.returnHomeButton.setOnClickListener {
+            navigateToMainActivity()
         }
+    }
+
+    // Menu
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 }

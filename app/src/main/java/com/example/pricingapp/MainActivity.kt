@@ -13,19 +13,33 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Menu buttons
+        // Navigation
+        setupMenuButtons()
+    }
+
+    // Create a new quote or view past quotes
+    private fun setupMenuButtons() {
         val quoteButton = binding.menuQuoteButton
         val historyButton = binding.menuHistoryButton
 
-        // Switch activity listeners
         quoteButton.setOnClickListener {
-            val intent = Intent(this, QuoteActivity::class.java)
-            startActivity(intent)
+            navigateToQuoteActivity()
         }
 
         historyButton.setOnClickListener {
-            val intent = Intent(this, HistoryActivity::class.java)
-            startActivity(intent)
+            navigateToHistoryActivity()
         }
+    }
+
+    // New quote
+    private fun navigateToQuoteActivity() {
+        val intent = Intent(this, QuoteActivity::class.java)
+        startActivity(intent)
+    }
+
+    // Past quotes
+    private fun navigateToHistoryActivity() {
+        val intent = Intent(this, HistoryActivity::class.java)
+        startActivity(intent)
     }
 }
