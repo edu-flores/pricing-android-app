@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Pricing App</string>
+
+    <string-array name="package_types">
+        <item>Bags</item>
+        <item>Bundles</item>
+        <item>Boxes</item>
+        <item>Cases</item>
+        <item>Crates</item>
+        <item>Cartons</item>
+        <item>Cylinders</item>
+        <item>Drums</item>
+        <item>Pails</item>
+        <item>Pieces</item>
+        <item>Pallets</item>
+        <item>Flat Racks</item>
+        <item>Reels</item>
+        <item>Rolls</item>
+        <item>Skids</item>
+        <item>Slip Sheets</item>
+        <item>Totes</item>
+    </string-array>
 </resources>
