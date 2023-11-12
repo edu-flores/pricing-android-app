@@ -4,6 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.room.Room
 import com.example.pricingapp.databinding.NewQuoteBinding
@@ -40,6 +44,18 @@ class QuoteActivity : AppCompatActivity() {
         val db = Room.databaseBuilder(applicationContext,
             AppDatabase::class.java, "QuoteDatabase.db").build()
 
+        //Package Type Options
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.package_types,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            binding.itemType.adapter = adapter
+        }
+
         // Calculate quote button action
         val button = binding.calculateQuote
         button.setOnClickListener {
@@ -54,7 +70,7 @@ class QuoteActivity : AppCompatActivity() {
 
             val itemClass    = binding.itemClass.text.toString()
             val itemWeight   = binding.itemWeight.text.toString()
-            val itemType     = binding.itemType.text.toString()
+            val itemType     = binding.itemType.selectedItem.toString()
             val itemQuantity = binding.itemQuantity.text.toString()
 
             val itemLength = binding.itemLength.text.toString()
@@ -69,9 +85,29 @@ class QuoteActivity : AppCompatActivity() {
             ) {
                 showToast("Please fill in all fields")
             } else {
-                // API call
+                // Calling of ABF's API
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
+
+                        val packageTypes = hashMapOf(
+                            "Bags" to "BAG",
+                            "Bundles" to "BX",
+                            "Boxes" to "BDL",
+                            "Cases" to "CS",
+                            "Crates" to "CRT",
+                            "Cartons" to "CTN",
+                            "Cylinders" to "CYL",
+                            "Drums" to "DR",
+                            "Pails" to "PL",
+                            "Pieces" to "PC",
+                            "Pallets" to "PLT",
+                            "Flat Racks" to "RK",
+                            "Reels" to "REL",
+                            "Rolls" to "RL",
+                            "Skids" to "SKD",
+                            "Slip Sheets" to "SLP",
+                            "Totes" to "TOTE"
+                        )
 
                         //Creating a map with the url parameters
                         val params = hashMapOf<String, String>(
@@ -90,7 +126,7 @@ class QuoteActivity : AppCompatActivity() {
                             "FrtHght1" to itemHeight,
                             "FrtLWHType" to "IN", // The API support IN and CM, we will only be using IN for this iteration
                             "UnitNo1" to itemQuantity,
-                            "UnitType1" to itemType,
+                            "UnitType1" to packageTypes[itemType]!!,
                             "ShipMonth" to month.toString(),
                             "ShipDay" to day.toString(),
                             "ShipYear" to year.toString(),
