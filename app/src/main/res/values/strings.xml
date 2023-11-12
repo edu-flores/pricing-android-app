@@ -73,4 +73,25 @@
         <item>WI</item> <!-- Wisconsin -->
         <item>WY</item> <!-- Wyoming -->
     </string-array>
+
+    <string-array name="classes">
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>65</item>
+        <item>70</item>
+        <item>77.5</item>
+        <item>85</item>
+        <item>92.5</item>
+        <item>100</item>
+        <item>110</item>
+        <item>125</item>
+        <item>150</item>
+        <item>175</item>
+        <item>200</item>
+        <item>250</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+    </string-array>
 </resources>

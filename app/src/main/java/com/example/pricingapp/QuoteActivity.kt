@@ -67,6 +67,18 @@ class QuoteActivity : AppCompatActivity() {
             binding.destinationState.adapter = adapter
         }
 
+        //Classes Options
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.classes,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            binding.itemClass.adapter = adapter
+        }
+
         //Package Type Options
         ArrayAdapter.createFromResource(
             this,
@@ -91,7 +103,7 @@ class QuoteActivity : AppCompatActivity() {
             val destinationCity  = binding.destinationCity.text.toString()
             val destinationState = binding.destinationState.selectedItem.toString()
 
-            val itemClass    = binding.itemClass.text.toString()
+            val itemClass    = binding.itemClass.selectedItem.toString()
             val itemWeight   = binding.itemWeight.text.toString()
             val itemType     = binding.itemType.selectedItem.toString()
             val itemQuantity = binding.itemQuantity.text.toString()
