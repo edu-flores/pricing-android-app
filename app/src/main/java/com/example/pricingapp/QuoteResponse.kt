@@ -1,6 +1,7 @@
 package com.example.pricingapp
 
 import org.simpleframework.xml.Element
+import org.simpleframework.xml.ElementList
 import org.simpleframework.xml.Root
 
 @Root(name = "ERROR", strict = false)
@@ -56,14 +57,12 @@ data class DestinationTerminalInfo(
 
 @Root(name = "ABF", strict = false)
 data class QuoteResponse(
-    //If there are errors
     @field:Element(name = "NUMERRORS", required = false)
     var numErrors: Int? = null,
 
-    @field:Element(name = "ERROR", required = false)
-    var error: Error? = null,
+    @field:ElementList(name = "ERROR", required = false)
+    var errors: List<Error>? = mutableListOf(),
 
-    //If there are no errors
     @field:Element(name = "QUOTEID", required = false)
     var quoteID: String? = null,
 
