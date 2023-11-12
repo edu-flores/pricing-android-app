@@ -4,13 +4,31 @@ import org.simpleframework.xml.Element
 import org.simpleframework.xml.ElementList
 import org.simpleframework.xml.Root
 
-@Root(name = "ERROR", strict = false)
-data class Error(
-    @field:Element(name = "ERRORCODE", required = false)
-    var errorCode: Int? = null,
+@Root(name = "ABF", strict = false)
+data class QuoteResponse(
+    @field:Element(name = "NUMERRORS", required = false)
+    var numErrors: Int? = null,
 
-    @field:Element(name = "ERRORMESSAGE", required = false)
-    var errorMessage: String? = null
+    @field:ElementList(name = "ERROR", inline = true, required = false)
+    var errors: List<Error>? = null,
+
+    @field:Element(name = "QUOTEID", required = false)
+    var quoteID: String? = null,
+
+    @field:Element(name = "CHARGE", required = false)
+    var charge: Float = 0f,
+
+    @field:Element(name = "ADVERTISEDTRANSIT", required = false)
+    var transitTime: String? = null,
+
+    @field:Element(name = "EXPIRATIONDATE", required = false)
+    var expirationDate: String? = null,
+
+    @field:Element(name = "ORIGTERMINFO", required = false)
+    var originInfo: OriginTerminalInfo? = null,
+
+    @field:Element(name = "DESTTERMINFO", required = false)
+    var destinationInfo: DestinationTerminalInfo? = null
 )
 
 @Root(name = "ORIGTERMINFO", strict = false)
@@ -55,29 +73,11 @@ data class DestinationTerminalInfo(
     var destinationTerminalType: String? = null
 )
 
-@Root(name = "ABF", strict = false)
-data class QuoteResponse(
-    @field:Element(name = "NUMERRORS", required = false)
-    var numErrors: Int? = null,
+@Root(name = "ERROR", strict = false)
+data class Error(
+    @field:ElementList(entry = "ERRORCODE", inline = true, required = false)
+    var errorCode: List<Int>? = null,
 
-    @field:ElementList(name = "ERROR", required = false)
-    var errors: List<Error>? = mutableListOf(),
-
-    @field:Element(name = "QUOTEID", required = false)
-    var quoteID: String? = null,
-
-    @field:Element(name = "CHARGE", required = false)
-    var charge: Float = 0f,
-
-    @field:Element(name = "ADVERTISEDTRANSIT", required = false)
-    var transitTime: String? = null,
-
-    @field:Element(name = "EXPIRATIONDATE", required = false)
-    var expirationDate: String? = null,
-
-    @field:Element(name = "ORIGTERMINFO", required = false)
-    var originInfo: OriginTerminalInfo? = null,
-
-    @field:Element(name = "DESTTERMINFO", required = false)
-    var destinationInfo: DestinationTerminalInfo? = null
+    @field:ElementList(entry = "ERRORMESSAGE", inline = true, required = false)
+    var errorMessage: List<String>? = null
 )
