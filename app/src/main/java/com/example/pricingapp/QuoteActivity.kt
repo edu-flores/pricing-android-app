@@ -1,5 +1,6 @@
 package com.example.pricingapp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.room.Room
 import com.example.pricingapp.databinding.NewQuoteBinding
 import kotlinx.coroutines.GlobalScope
@@ -118,7 +120,7 @@ class QuoteActivity : AppCompatActivity() {
                 itemClass.isBlank() || itemWeight.isBlank() || itemType.isBlank() || itemQuantity.isBlank() || // itemClass will remain unused for this iteration
                 itemLength.isBlank() || itemWidth.isBlank() || itemHeight.isBlank()
             ) {
-                showToast("Please fill in all fields")
+                showToast(this, "Please fill in all fields")
             } else {
                 // Calling of ABF's API
                 CoroutineScope(Dispatchers.IO).launch {
@@ -176,6 +178,9 @@ class QuoteActivity : AppCompatActivity() {
                             "TPBAcct" to properties.getProperty("TPBAcct").toString()
                         )
 
+                        runOnUiThread {
+                            showToast(this@QuoteActivity, "Loading...")
+                        }
                         val call = getRetrofit().create(XmlPlaceholderApi::class.java).getQuote(params)
 
                         runOnUiThread {
@@ -183,37 +188,55 @@ class QuoteActivity : AppCompatActivity() {
                                 val quoteResponseData = call.body()
                                 Log.d("QuoteActivity", "API Response: $quoteResponseData")
 
-                                // Save in SQLite
-                                GlobalScope.launch(Dispatchers.IO) {
-                                    val quote = Quote(
-                                        id = quoteResponseData?.quoteID.toString(),
-                                        fromCity = quoteResponseData?.originInfo?.origingTerminalCity.toString(),
-                                        fromState = quoteResponseData?.originInfo?.origingTerminalState.toString(),
-                                        fromZip = quoteResponseData?.originInfo?.originTerminalZip.toString(),
-                                        toCity = quoteResponseData?.destinationInfo?.destinationTerminalCity.toString(),
-                                        toState = quoteResponseData?.destinationInfo?.destinationTerminalState.toString(),
-                                        toZip = quoteResponseData?.destinationInfo?.destinationTerminalZip.toString(),
-                                        price = quoteResponseData?.charge.toString(),
-                                        transitTime = quoteResponseData?.transitTime.toString(),
-                                        expirationDate = quoteResponseData?.expirationDate.toString()
-                                    )
-                                    db.quoteDao().insert(quote)
-                                }
+                                // User input error
+                                if (quoteResponseData?.numErrors != 0) {
+                                    var errorMessage = ""
+                                    for (error in quoteResponseData?.errors!!) {
+                                        for (message in error.errorMessage!!) {
+                                            errorMessage += "• ${message}\n"
+                                        }
+                                    }
+                                    val builder = AlertDialog.Builder(this@QuoteActivity)
+                                    builder.setTitle("Invalid Quote")
+                                    builder.setMessage(errorMessage)
+                                    builder.setPositiveButton("OK") { dialog, _ ->
+                                        dialog.dismiss()
+                                    }
+                                    val dialog = builder.create()
+                                    dialog.show()
+                                } else {
+                                    // Save in SQLite
+                                    GlobalScope.launch(Dispatchers.IO) {
+                                        val quote = Quote(
+                                            id = quoteResponseData?.quoteID.toString(),
+                                            fromCity = quoteResponseData?.originInfo?.origingTerminalCity.toString(),
+                                            fromState = quoteResponseData?.originInfo?.origingTerminalState.toString(),
+                                            fromZip = quoteResponseData?.originInfo?.originTerminalZip.toString(),
+                                            toCity = quoteResponseData?.destinationInfo?.destinationTerminalCity.toString(),
+                                            toState = quoteResponseData?.destinationInfo?.destinationTerminalState.toString(),
+                                            toZip = quoteResponseData?.destinationInfo?.destinationTerminalZip.toString(),
+                                            price = quoteResponseData?.charge.toString(),
+                                            transitTime = quoteResponseData?.transitTime.toString(),
+                                            expirationDate = quoteResponseData?.expirationDate.toString()
+                                        )
+                                        db.quoteDao().insert(quote)
+                                    }
 
-                                // Show result activity
-                                val intent = Intent(this@QuoteActivity, ResultActivity::class.java)
-                                val bundle = Bundle()
-                                bundle.putString("fromCity", quoteResponseData?.originInfo?.origingTerminalCity.toString())
-                                bundle.putString("fromState", quoteResponseData?.originInfo?.origingTerminalState.toString())
-                                bundle.putString("fromZip", quoteResponseData?.originInfo?.originTerminalZip.toString())
-                                bundle.putString("toCity", quoteResponseData?.destinationInfo?.destinationTerminalCity.toString())
-                                bundle.putString("toState", quoteResponseData?.destinationInfo?.destinationTerminalState.toString())
-                                bundle.putString("toZip", quoteResponseData?.destinationInfo?.destinationTerminalZip.toString())
-                                bundle.putString("price", quoteResponseData?.charge.toString())
-                                bundle.putString("transitTime", quoteResponseData?.transitTime.toString())
-                                bundle.putString("expirationDate", quoteResponseData?.expirationDate.toString())
-                                intent.putExtras(bundle)
-                                startActivity(intent)
+                                    // Show result activity
+                                    val intent = Intent(this@QuoteActivity, ResultActivity::class.java)
+                                    val bundle = Bundle()
+                                    bundle.putString("fromCity", quoteResponseData?.originInfo?.origingTerminalCity.toString())
+                                    bundle.putString("fromState", quoteResponseData?.originInfo?.origingTerminalState.toString())
+                                    bundle.putString("fromZip", quoteResponseData?.originInfo?.originTerminalZip.toString())
+                                    bundle.putString("toCity", quoteResponseData?.destinationInfo?.destinationTerminalCity.toString())
+                                    bundle.putString("toState", quoteResponseData?.destinationInfo?.destinationTerminalState.toString())
+                                    bundle.putString("toZip", quoteResponseData?.destinationInfo?.destinationTerminalZip.toString())
+                                    bundle.putString("price", quoteResponseData?.charge.toString())
+                                    bundle.putString("transitTime", quoteResponseData?.transitTime.toString())
+                                    bundle.putString("expirationDate", quoteResponseData?.expirationDate.toString())
+                                    intent.putExtras(bundle)
+                                    startActivity(intent)
+                                }
                             } else {
                                 Log.e("QuoteActivity", "API Error Response: ${call.errorBody()?.string()}")
                             }
@@ -242,7 +265,7 @@ class QuoteActivity : AppCompatActivity() {
     }
 
     // Notifications
-    fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun showToast(context: Context, message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
