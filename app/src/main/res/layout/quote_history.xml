@@ -31,6 +31,19 @@
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/emptyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="No quotes yet..."
+        android:textSize="22sp"
+        android:visibility="gone"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/historyTextView" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyRecyclerView"
         android:layout_width="0dp"
@@ -45,13 +58,25 @@
         android:id="@+id/returnHomeButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Return Home"
+        android:layout_marginTop="24dp"
         android:background="@drawable/action_button"
+        android:text="Return Home"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/historyRecyclerView" />
+
+    <android.widget.Button
+        android:id="@+id/deleteQuotesButton"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/secondary_button"
+        android:text="Delete Quotes"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/returnHomeButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

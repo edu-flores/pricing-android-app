@@ -14,9 +14,6 @@ interface QuoteDao {
     @Query("SELECT * FROM quotes ORDER BY id DESC")
     fun getAllQuotes(): List<Quote>
 
-    @Update
-    fun updateQuote(quote: Quote): Int
-
-    @Delete
-    fun deleteQuote(quote: Quote): Int
+    @Query("DELETE FROM quotes")
+    fun deleteAllQuotes(): Void
 }
