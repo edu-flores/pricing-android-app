@@ -23,10 +23,16 @@ class HistoryAdapter(private val quoteList: List<Quote>, private val context: Co
 
         holder.itemView.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("from", item.fromPlace)
-            bundle.putString("to", item.toPlace)
-            bundle.putInt("price", item.price)
-            bundle.putString("transit", item.transit)
+
+            bundle.putString("fromCity", item.fromCity)
+            bundle.putString("fromState", item.fromState)
+            bundle.putString("fromZip", item.fromZip)
+            bundle.putString("toCity", item.toCity)
+            bundle.putString("toState", item.toState)
+            bundle.putString("toZip", item.toZip)
+            bundle.putString("price", item.price)
+            bundle.putString("transitTime", item.transitTime)
+            bundle.putString("expirationDate", item.transitTime)
 
             val intent = Intent(context, ResultActivity::class.java)
             intent.putExtras(bundle)
