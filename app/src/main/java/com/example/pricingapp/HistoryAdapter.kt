@@ -47,9 +47,9 @@ class HistoryAdapter(private val quoteList: List<Quote>, private val context: Co
     inner class QuoteViewHolder(private val binding: QuoteItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(quote: Quote) {
-            binding.itemFromTextView.text = "From: ${quote.fromCity}, ${quote.fromState}, ${quote.fromZip}"
-            binding.itemToTextView.text = "To: ${quote.toCity}, ${quote.toState}, ${quote.toZip}"
-            binding.itemPriceTextView.text = "Price: $${quote.price} USD"
+            binding.itemFromTextView.text = "From: ${quote.fromCity}, ${quote.fromState}"
+            binding.itemToTextView.text = "To: ${quote.toCity}, ${quote.toState}"
+            binding.itemPriceTextView.text = "$${quote.price} USD"
             binding.itemTransitTextView.text = "TT: ${quote.transitTime}"
         }
     }
