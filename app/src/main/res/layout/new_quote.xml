@@ -94,7 +94,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/originCity" />
 
-        <EditText
+        <Spinner
             android:id="@+id/originState"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -102,7 +102,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
-            android:hint="e.g. Massachussets"
             android:inputType="text"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -178,7 +177,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/destinationCity" />
 
-        <EditText
+        <Spinner
             android:id="@+id/destinationState"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -186,7 +185,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
-            android:hint="e.g. Nevada"
             android:inputType="text"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"

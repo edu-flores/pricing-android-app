@@ -20,4 +20,57 @@
         <item>Slip Sheets</item>
         <item>Totes</item>
     </string-array>
+
+    <string-array name="states">
+        <item>AL</item> <!-- Alabama -->
+        <item>AK</item> <!-- Alaska -->
+        <item>AZ</item> <!-- Arizona -->
+        <item>AR</item> <!-- Arkansas -->
+        <item>CA</item> <!-- California -->
+        <item>CO</item> <!-- Colorado -->
+        <item>CT</item> <!-- Connecticut -->
+        <item>DE</item> <!-- Delaware -->
+        <item>FL</item> <!-- Florida -->
+        <item>GA</item> <!-- Georgia -->
+        <item>HI</item> <!-- Hawaii -->
+        <item>ID</item> <!-- Idaho -->
+        <item>IL</item> <!-- Illinois -->
+        <item>IN</item> <!-- Indiana -->
+        <item>IA</item> <!-- Iowa -->
+        <item>KS</item> <!-- Kansas -->
+        <item>KY</item> <!-- Kentucky -->
+        <item>LA</item> <!-- Louisiana -->
+        <item>ME</item> <!-- Maine -->
+        <item>MD</item> <!-- Maryland -->
+        <item>MA</item> <!-- Massachusetts -->
+        <item>MI</item> <!-- Michigan -->
+        <item>MN</item> <!-- Minnesota -->
+        <item>MS</item> <!-- Mississippi -->
+        <item>MO</item> <!-- Missouri -->
+        <item>MT</item> <!-- Montana -->
+        <item>NE</item> <!-- Nebraska -->
+        <item>NV</item> <!-- Nevada -->
+        <item>NH</item> <!-- New Hampshire -->
+        <item>NJ</item> <!-- New Jersey -->
+        <item>NM</item> <!-- New Mexico -->
+        <item>NY</item> <!-- New York -->
+        <item>NC</item> <!-- North Carolina -->
+        <item>ND</item> <!-- North Dakota -->
+        <item>OH</item> <!-- Ohio -->
+        <item>OK</item> <!-- Oklahoma -->
+        <item>OR</item> <!-- Oregon -->
+        <item>PA</item> <!-- Pennsylvania -->
+        <item>RI</item> <!-- Rhode Island -->
+        <item>SC</item> <!-- South Carolina -->
+        <item>SD</item> <!-- South Dakota -->
+        <item>TN</item> <!-- Tennessee -->
+        <item>TX</item> <!-- Texas -->
+        <item>UT</item> <!-- Utah -->
+        <item>VT</item> <!-- Vermont -->
+        <item>VA</item> <!-- Virginia -->
+        <item>WA</item> <!-- Washington -->
+        <item>WV</item> <!-- West Virginia -->
+        <item>WI</item> <!-- Wisconsin -->
+        <item>WY</item> <!-- Wyoming -->
+    </string-array>
 </resources>

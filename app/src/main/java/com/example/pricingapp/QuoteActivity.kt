@@ -44,6 +44,29 @@ class QuoteActivity : AppCompatActivity() {
         val db = Room.databaseBuilder(applicationContext,
             AppDatabase::class.java, "QuoteDatabase.db").build()
 
+        //State Options
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.states,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            binding.originState.adapter = adapter
+        }
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.states,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            binding.destinationState.adapter = adapter
+        }
+
         //Package Type Options
         ArrayAdapter.createFromResource(
             this,
@@ -62,11 +85,11 @@ class QuoteActivity : AppCompatActivity() {
             // Get user values
             val originZip   = binding.originZip.text.toString()
             val originCity  = binding.originCity.text.toString()
-            val originState = binding.originState.text.toString()
+            val originState = binding.originState.selectedItem.toString()
 
             val destinationZip   = binding.destinationZip.text.toString()
             val destinationCity  = binding.destinationCity.text.toString()
-            val destinationState = binding.destinationState.text.toString()
+            val destinationState = binding.destinationState.selectedItem.toString()
 
             val itemClass    = binding.itemClass.text.toString()
             val itemWeight   = binding.itemWeight.text.toString()
