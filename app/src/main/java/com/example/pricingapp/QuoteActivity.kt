@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
 import androidx.room.Room
 import com.example.pricingapp.databinding.NewQuoteBinding
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +25,9 @@ import java.util.Properties
 class QuoteActivity : AppCompatActivity() {
     private lateinit var binding: NewQuoteBinding
     private lateinit var db: AppDatabase
+
+    private val fragmentManager = supportFragmentManager
+    private var fragmentCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,29 +49,64 @@ class QuoteActivity : AppCompatActivity() {
         db = Room.databaseBuilder(applicationContext,
             AppDatabase::class.java, "QuoteDatabase.db").build()
 
+        // Adding the first cargo fragment
+        fragmentCount++
+        val fragment = CargoItem.newInstance(fragmentCount)
+        fragmentManager.beginTransaction()
+            .add(binding.fragmentContainer.id, fragment, "fragment$fragmentCount") // Gives a tag to each fragment so that we can search for it later.
+            .commit()
+
+        // Add fragment Button
+        binding.addItemButton.setOnClickListener {
+            if (fragmentCount < 15) {
+                fragmentCount++
+                val fragment = CargoItem.newInstance(fragmentCount)
+                fragmentManager.beginTransaction()
+                    .add(binding.fragmentContainer.id, fragment, "fragment$fragmentCount") // Gives a tag to each fragment so that we can search for it later.
+                    .commit()
+            }
+        }
+
+        // Remove fragment Button
+        binding.removeItemButton.setOnClickListener {
+            val fragment = fragmentManager.findFragmentById(binding.fragmentContainer.id)
+            if (fragment != null && fragmentCount > 1) { // Won't let the app have less than cargo fragment
+                fragmentManager.beginTransaction()
+                    .remove(fragment)
+                    .commit()
+                fragmentCount--
+            }
+        }
+
         // Dropdown buttons
         setupSpinners()
 
+
         // Calculate quote button
         binding.calculateQuote.setOnClickListener {
-            val userValues = getUserInput()
+            if(fragmentCount > 0){ //Solo hace algo si hay más de un item agregado
+                val userValues = getUserInput()
 
-            if (userValues.values.any { it.isBlank() }) {
-                showToast(this, "Please fill in all fields")
-            } else {
-                CoroutineScope(Dispatchers.IO).launch {
-                    try {
-                        val params = buildApiParams(userValues, month, day, year, properties)
-                        runOnUiThread {
-                            showToast(this@QuoteActivity, "Loading...")
-                        }
-                        val call = getRetrofit().create(XmlPlaceholderApi::class.java).getQuote(params)
+                if (userValues.values.any { it.isBlank() }) {
+                    showToast(this, "Please fill in all fields")
+                } else {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            val params = buildApiParams(userValues, month, day, year, properties)
 
-                        runOnUiThread {
-                            handleApiResponse(call, db)
+                            runOnUiThread {
+                                showToast(this@QuoteActivity, "Loading...")
+                            }
+                            val call = getRetrofit().create(XmlPlaceholderApi::class.java).getQuote(params)
+
+                            runOnUiThread {
+                                handleApiResponse(call, db)
+                            }
+
+                            Log.e("params", params.toString())
+                        } catch (e: Exception) {
+                            Log.e("QuoteActivity", "Exception during API call: ${e.message}", e)
                         }
-                    } catch (e: Exception) {
-                        Log.e("QuoteActivity", "Exception during API call: ${e.message}", e)
                     }
                 }
             }
@@ -83,8 +122,6 @@ class QuoteActivity : AppCompatActivity() {
     private fun setupSpinners() {
         setupSpinner(binding.originState, R.array.states)
         setupSpinner(binding.destinationState, R.array.states)
-        setupSpinner(binding.itemClass, R.array.classes)
-        setupSpinner(binding.itemType, R.array.package_types)
     }
 
     // Adapters for spinners
@@ -99,23 +136,32 @@ class QuoteActivity : AppCompatActivity() {
         }
     }
 
-    // Extract uer input from the activity
+
+    // Extract user input from the activity
     private fun getUserInput(): Map<String, String> {
-        return mapOf(
+
+        var data = mutableMapOf(
             "originZip" to binding.originZip.text.toString(),
             "originCity" to binding.originCity.text.toString(),
             "originState" to binding.originState.selectedItem.toString(),
             "destinationZip" to binding.destinationZip.text.toString(),
             "destinationCity" to binding.destinationCity.text.toString(),
-            "destinationState" to binding.destinationState.selectedItem.toString(),
-            "itemClass" to binding.itemClass.selectedItem.toString(),
-            "itemWeight" to binding.itemWeight.text.toString(),
-            "itemType" to binding.itemType.selectedItem.toString(),
-            "itemQuantity" to binding.itemQuantity.text.toString(),
-            "itemLength" to binding.itemLength.text.toString(),
-            "itemWidth" to binding.itemWidth.text.toString(),
-            "itemHeight" to binding.itemHeight.text.toString()
+            "destinationState" to binding.destinationState.selectedItem.toString()
         )
+
+        for(i in 1..fragmentCount){
+            val fragment = supportFragmentManager.findFragmentByTag("fragment$i") as CargoItem
+
+            data["itemClass$i"] = fragment.classValue
+            data["itemWeight$i"] = fragment.weightValue
+            data["itemPackage$i"] = fragment.packageValue
+            data["itemQuantity$i"] = fragment.quantityValue
+            data["itemLength$i"] = fragment.lengthValue
+            data["itemWidth$i"] = fragment.widthValue
+            data["itemHeight$i"] = fragment.heightValue
+        }
+
+        return data
     }
 
     // API query parameters
@@ -135,7 +181,7 @@ class QuoteActivity : AppCompatActivity() {
             "Slip Sheets" to "SLP", "Totes" to "TOTE"
         )
 
-        return mapOf(
+        var params = mutableMapOf(
             "ID" to properties.getProperty("ID"),
             "ShipCity" to userValues["originCity"]!!,
             "ShipState" to userValues["originState"]!!,
@@ -145,13 +191,13 @@ class QuoteActivity : AppCompatActivity() {
             "ConsState" to userValues["destinationState"]!!,
             "ConsZip" to userValues["destinationZip"]!!,
             "ConsCountry" to "US",  // Hard coded US as we are only giving service inside the US and won't be using other counties
-            "Wgt1" to userValues["itemWeight"]!!,
-            "FrtLng1" to userValues["itemLength"]!!,
-            "FrtWdth1" to userValues["itemWidth"]!!,
-            "FrtHght1" to userValues["itemHeight"]!!,
+            //"Wgt1" to userValues["itemWeight"]!!,
+            //"FrtLng1" to userValues["itemLength"]!!,
+            //"FrtWdth1" to userValues["itemWidth"]!!,
+            //"FrtHght1" to userValues["itemHeight"]!!,
             "FrtLWHType" to "IN",  // The API supports IN and CM, we will only be using IN for this iteration
-            "UnitNo1" to userValues["itemQuantity"]!!,
-            "UnitType1" to packageTypes[userValues["itemType"]]!!,
+            //"UnitNo1" to userValues["itemQuantity"]!!,
+            //"UnitType1" to packageTypes[userValues["itemType"]]!!,
             "ShipMonth" to month.toString(),
             "ShipDay" to day.toString(),
             "ShipYear" to year.toString(),
@@ -165,6 +211,17 @@ class QuoteActivity : AppCompatActivity() {
             "TPBCountry" to properties.getProperty("TPBCountry").toString(),
             "TPBAcct" to properties.getProperty("TPBAcct").toString()
         )
+
+        for(i in 1..fragmentCount){
+            params["Wgt$i"] = userValues["itemWeight$i"]
+            params["FrtLng$i"] = userValues["itemLength$i"]
+            params["FrtWdth$i"] = userValues["itemWidth$i"]
+            params["FrtHght$i"] = userValues["itemHeight$i"]
+            params["UnitNo$i"] = userValues["itemQuantity$i"]
+            params["UnitType$i"] = packageTypes[userValues["itemPackage$i"]]
+        }
+
+        return params
     }
 
     // API response - error or success handling
