@@ -27,13 +27,13 @@ class CargoItem : Fragment() {
 
     private var fragmentNumber = 0
 
-    lateinit var classValue : String
-    lateinit var weightValue : String
-    lateinit var packageValue : String
-    lateinit var quantityValue : String
-    lateinit var lengthValue : String
-    lateinit var widthValue : String
-    lateinit var heightValue : String
+    var classValue : String = ""
+    var weightValue : String = ""
+    var packageValue : String = ""
+    var quantityValue : String = ""
+    var lengthValue : String = ""
+    var widthValue : String = ""
+    var heightValue : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
