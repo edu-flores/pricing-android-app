@@ -25,6 +25,9 @@ class QuoteActivity : AppCompatActivity() {
     private lateinit var binding: NewQuoteBinding
     private lateinit var db: AppDatabase
 
+    private val fragmentManager = supportFragmentManager
+    private var fragmentCount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = NewQuoteBinding.inflate(layoutInflater)
@@ -45,9 +48,32 @@ class QuoteActivity : AppCompatActivity() {
         db = Room.databaseBuilder(applicationContext,
             AppDatabase::class.java, "QuoteDatabase.db").build()
 
+        // Add fragment Button
+        binding.addItemButton.setOnClickListener {
+            if (fragmentCount < 15) {
+                fragmentCount++
+                val fragment = CargoItem.newInstance(fragmentCount)
+                fragmentManager.beginTransaction()
+                    .add(binding.fragmentContainer.id, fragment)
+                    .commit()
+            }
+        }
+
+        // Remove fragment Button
+        binding.removeItemButton.setOnClickListener {
+            val fragment = fragmentManager.findFragmentById(binding.fragmentContainer.id)
+            if (fragment != null) {
+                fragmentManager.beginTransaction()
+                    .remove(fragment)
+                    .commit()
+                if (fragmentCount > 0) fragmentCount--
+            }
+        }
+
         // Dropdown buttons
         setupSpinners()
 
+        /*
         // Calculate quote button
         binding.calculateQuote.setOnClickListener {
             val userValues = getUserInput()
@@ -73,6 +99,8 @@ class QuoteActivity : AppCompatActivity() {
             }
         }
 
+         */
+
         // Return home button
         binding.returnHome.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
@@ -83,8 +111,6 @@ class QuoteActivity : AppCompatActivity() {
     private fun setupSpinners() {
         setupSpinner(binding.originState, R.array.states)
         setupSpinner(binding.destinationState, R.array.states)
-        setupSpinner(binding.itemClass, R.array.classes)
-        setupSpinner(binding.itemType, R.array.package_types)
     }
 
     // Adapters for spinners
@@ -99,7 +125,8 @@ class QuoteActivity : AppCompatActivity() {
         }
     }
 
-    // Extract uer input from the activity
+    /*
+    // Extract user input from the activity
     private fun getUserInput(): Map<String, String> {
         return mapOf(
             "originZip" to binding.originZip.text.toString(),
@@ -249,5 +276,5 @@ class QuoteActivity : AppCompatActivity() {
     // Notification
     private fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
+    }*/
 }

@@ -202,211 +202,52 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/destinationState" />
 
-        <TextView
-            android:id="@+id/itemClassTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:text="Class"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cargoTextView" />
 
-        <Spinner
-            android:id="@+id/itemClass"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="e.g. 50"
-            android:inputType="number"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/itemClassTextView" />
 
-        <TextView
-            android:id="@+id/itemWeightTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:text="Weight"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/cargoTextView" />
-
-        <EditText
-            android:id="@+id/itemWeight"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="e.g. 30"
-            android:inputType="number"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/itemWeightTextView" />
-
-        <TextView
-            android:id="@+id/itemTypeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Package Type"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/itemClass" />
-
-        <Spinner
-            android:id="@+id/itemType"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="e.g. PLT"
-            android:inputType="text"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/itemTypeTextView" />
-
-        <TextView
-            android:id="@+id/itemQuantityTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Quantity"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/itemWeight" />
-
-        <EditText
-            android:id="@+id/itemQuantity"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="e.g. 2"
-            android:inputType="text"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/itemQuantityTextView" />
-
-        <TextView
-            android:id="@+id/itemLengthTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Length"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/itemType" />
-
-        <EditText
-            android:id="@+id/itemLength"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="64dp"
-            android:ems="10"
-            android:hint="Length"
-            android:inputType="number"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/itemLengthTextView" />
-
-        <TextView
-            android:id="@+id/itemWidthTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="11dp"
-            android:text="Width"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/itemType" />
-
-        <EditText
-            android:id="@+id/itemWidth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="Width"
-            android:inputType="number"
-            app:layout_constraintEnd_toStartOf="@+id/itemHeight"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/itemLength"
-            app:layout_constraintTop_toBottomOf="@+id/itemWidthTextView" />
-
-        <TextView
-            android:id="@+id/itemHeightTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="16dp"
-            android:text="Height"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/itemQuantity" />
-
-        <EditText
-            android:id="@+id/itemHeight"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:ems="10"
-            android:hint="Height"
-            android:inputType="number"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/itemHeightTextView" />
-
-        <!--
-
-        <Button
+        <android.widget.Button
             android:id="@+id/removeItemButton"
             android:layout_width="0dp"
             android:layout_height="41dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
             android:text="Remove"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            android:background="@drawable/secondary_button"
+            app:layout_constraintEnd_toStartOf="@+id/addItemButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/itemWidth" />
+            app:layout_constraintTop_toBottomOf="@+id/fragment_container" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/addItemButton"
             android:layout_width="0dp"
             android:layout_height="41dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="Add"
+            android:background="@drawable/secondary_button"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/itemWidth" />
-
-        -->
+            app:layout_constraintStart_toEndOf="@+id/removeItemButton"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_container" />
 
         <android.widget.Button
             android:id="@+id/calculateQuote"
             android:layout_width="0dp"
             android:layout_height="39dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/action_button"
             android:text="Calculate Quote"
@@ -414,7 +255,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintHorizontal_bias="0.464"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/itemWidth" />
+            app:layout_constraintTop_toBottomOf="@+id/addItemButton" />
 
         <android.widget.Button
             android:id="@+id/returnHome"
