@@ -191,13 +191,7 @@ class QuoteActivity : AppCompatActivity() {
             "ConsState" to userValues["destinationState"]!!,
             "ConsZip" to userValues["destinationZip"]!!,
             "ConsCountry" to "US",  // Hard coded US as we are only giving service inside the US and won't be using other counties
-            //"Wgt1" to userValues["itemWeight"]!!,
-            //"FrtLng1" to userValues["itemLength"]!!,
-            //"FrtWdth1" to userValues["itemWidth"]!!,
-            //"FrtHght1" to userValues["itemHeight"]!!,
-            "FrtLWHType" to "IN",  // The API supports IN and CM, we will only be using IN for this iteration
-            //"UnitNo1" to userValues["itemQuantity"]!!,
-            //"UnitType1" to packageTypes[userValues["itemType"]]!!,
+            "FrtLWHType" to "IN",
             "ShipMonth" to month.toString(),
             "ShipDay" to day.toString(),
             "ShipYear" to year.toString(),
