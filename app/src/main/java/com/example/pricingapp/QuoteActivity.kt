@@ -100,7 +100,7 @@ class QuoteActivity : AppCompatActivity() {
                             val call = getRetrofit().create(XmlPlaceholderApi::class.java).getQuote(params)
 
                             runOnUiThread {
-                                handleApiResponse(call, db)
+                                handleApiResponse(call, db, userValues, month, day, year)
                             }
 
                             Log.e("params", params.toString())
@@ -219,7 +219,7 @@ class QuoteActivity : AppCompatActivity() {
     }
 
     // API response - error or success handling
-    private fun handleApiResponse(call: retrofit2.Response<QuoteResponse>, db: AppDatabase) {
+    private fun handleApiResponse(call: retrofit2.Response<QuoteResponse>, db: AppDatabase, userValues: Map<String, String>, day: Int, month: Int, year: Int) {
         if (call.isSuccessful) {
             val quoteResponseData = call.body()
             Log.d("QuoteActivity", "API Response: $quoteResponseData")
@@ -227,7 +227,7 @@ class QuoteActivity : AppCompatActivity() {
             if (quoteResponseData?.numErrors != 0) {
                 handleUserInputError(quoteResponseData?.errors!!)
             } else {
-                saveQuoteInDatabase(quoteResponseData, db)
+                saveQuoteInDatabase(quoteResponseData, db, userValues, day, month, year)
                 startResultActivity(quoteResponseData)
             }
         } else {
@@ -254,16 +254,16 @@ class QuoteActivity : AppCompatActivity() {
     }
 
     // API response success
-    private fun saveQuoteInDatabase(quoteResponseData: QuoteResponse, db: AppDatabase) {
+    private fun saveQuoteInDatabase(quoteResponseData: QuoteResponse, db: AppDatabase, userValues: Map<String, String>, day: Int, month: Int, year: Int) {
         GlobalScope.launch(Dispatchers.IO) {
             val quote = Quote(
                 id = quoteResponseData.quoteID.toString(),
-                fromCity = quoteResponseData.originInfo?.origingTerminalCity.toString(),
-                fromState = quoteResponseData.originInfo?.origingTerminalState.toString(),
-                fromZip = quoteResponseData.originInfo?.originTerminalZip.toString(),
-                toCity = quoteResponseData.destinationInfo?.destinationTerminalCity.toString(),
-                toState = quoteResponseData.destinationInfo?.destinationTerminalState.toString(),
-                toZip = quoteResponseData.destinationInfo?.destinationTerminalZip.toString(),
+                fromCity = userValues["originCity"]!!,
+                fromState = userValues["originState"]!!,
+                fromZip = userValues["originZip"]!!,
+                toCity = userValues["destinationCity"]!!,
+                toState = userValues["destinationState"]!!,
+                toZip = userValues["destinationZip"]!!,
                 price = quoteResponseData.charge.toString(),
                 transitTime = quoteResponseData.transitTime.toString(),
                 expirationDate = quoteResponseData.expirationDate.toString()
